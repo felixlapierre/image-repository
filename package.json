@@ -1,0 +1,23 @@
+{
+    "name": "image-repository",
+    "version": "1.0.0",
+    "description": "Image repository server created for the Shopify developer intern challenge question",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/felixlapierre/image-repository.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/felixlapierre/image-repository/issues"
+    },
+    "homepage": "https://github.com/felixlapierre/image-repository#readme",
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}

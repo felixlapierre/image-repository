@@ -23,12 +23,11 @@ describe('app', () => {
                 .expect(200)
                 .then((response) => {
                     return request(app)
-                        .get(`/image/${response.uuid}`)
+                        .get(`/image/${response.body.uuid}`)
                         .expect(200)
                 }).then((response) => {
-                    console.log(response);
-                    expect(response.base64).to.exist;
-                    expect(response.base64).to.equal(sampleImages.sample.base64);
+                    expect(response.body.base64).to.exist;
+                    expect(response.body.base64).to.equal(sampleImages.sample.base64);
                 })
         })
 

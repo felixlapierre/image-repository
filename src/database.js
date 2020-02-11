@@ -38,9 +38,12 @@ module.exports.clearImages = function () {
 
 module.exports.findImageByUuid = function (uuid) {
     return new Promise((resolve, reject) => {
-        ImageModel.find({ uuid: uuid }, (err, image) => {
+        ImageModel.find({ uuid: uuid }, (err, images) => {
             if(err) reject(err)
-            else resolve(image);
+            else if (images.length == 0) reject();
+            if (images.length > 1) 
+                console.log("More than 1 image found with uuid " + uuid);
+            resolve(images[0]);
         })
     })
 }

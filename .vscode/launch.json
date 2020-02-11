@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Mocha Current File",
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",

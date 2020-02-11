@@ -13,8 +13,8 @@ router.get('/:uuid', (req, res) => {
 
 router.post('/', (req, res) => {
     const image = req.body.image;
-    database.saveImage(image).then(() => {
-        res.sendStatus(200);
+    database.saveImage(image).then((savedImage) => {
+        res.status(200).send({uuid: savedImage.uuid});
     }).catch((err) => {
         res.sendStatus(500);
     });

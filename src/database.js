@@ -25,9 +25,9 @@ module.exports.saveImage = function (image) {
         image.uuid = uuid.v4();
         var newImage = new ImageModel(image)
 
-        newImage.save({}, (err, product) => {
+        newImage.save({}, (err, savedImage) => {
             if (err) reject(err)
-            else resolve(product)
+            else resolve(savedImage)
         });
     })
 }

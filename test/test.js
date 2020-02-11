@@ -21,7 +21,15 @@ describe('app', () => {
                 .post('/image')
                 .send({ image: sampleImages.sample })
                 .expect(200)
-
+                .then((response) => {
+                    return request(app)
+                        .get(`/image/${response.uuid}`)
+                        .expect(200)
+                }).then((response) => {
+                    console.log(response);
+                    expect(response.base64).to.exist;
+                    expect(response.base64).to.equal(sampleImages.sample.base64);
+                })
         })
 
         it('should support uploading several images', async () => {

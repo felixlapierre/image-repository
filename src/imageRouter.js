@@ -4,7 +4,6 @@ var database = require('./database');
 
 router.get('/:uuid', (req, res) => {
     database.findImageByUuid(req.params.uuid).then((image) => {
-        delete image['_id'];
         res.status(200).send(image);
     }).catch((err) => {
         res.sendStatus(404);
@@ -25,8 +24,8 @@ router.post('/bulk', (req, res) => {
     const promises = images.map((image) => {
         return database.saveImage(image);
     })
-    Promise.all(promises).then(() => {
-        res.sendStatus(200);
+    Promise.all(promises).then((images) => {
+        res.status(200).send({images: images})
     }).catch(() => {
         res.sendStatus(500);
     })

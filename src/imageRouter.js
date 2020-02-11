@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const imgData = req.body.base64image;
+    const imgData = req.body.image;
     database.saveImage(imgData);
     res.status(200).send("Image saved successfully");
 })

@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const image = req.body.image;
     database.saveImage(image);
-    res.status(200).send("Image saved successfully");
+    res.sendStatus(200);
 })
 
 router.post('/bulk', (req, res) => {
@@ -17,6 +17,7 @@ router.post('/bulk', (req, res) => {
     images.forEach((image) => {
         database.saveImage(image);
     })
+    res.sendStatus(200);
 })
 
 module.exports = router

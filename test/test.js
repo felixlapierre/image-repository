@@ -1,6 +1,7 @@
 const request = require('supertest');
 const expect = require('chai').expect;
 let app = require('../src/index');
+let database = require('../src/database');
 
 function loadImage(filename) {
     const fs = require('fs');
@@ -9,6 +10,9 @@ function loadImage(filename) {
 }
 
 describe('app', () => {
+    before(() => {
+        database.clearImages();
+    })
     describe('/', () => {
         it('should return status 200', (done) => {
             request(app)
@@ -17,7 +21,7 @@ describe('app', () => {
         })
     })
     describe('POST /images', () => {
-        it('should upload an image', () => {
+        it('should upload an image', (done) => {
             const name = "Sample Image";
             const base64 = loadImage('sample.jpg');
             const image = {
@@ -26,11 +30,26 @@ describe('app', () => {
             }
             request(app)
                 .post('/image')
-                .send({image: image})
-                .expect(200)
-                .end((err, res) => {
-                    expect(res.text).to.equal("Image saved successfully")
-                })
+                .send({ image: image })
+                .expect(200, done);
+        })
+    })
+
+    describe('POST /images/bulk', () => {
+        it('should be able to upload several images', (done) => {
+            const image1 = {
+                name: "Blue",
+                base64: loadImage('sample2.jpg')
+            }
+            const image2 = {
+                name: "Matterhorn",
+                base64: loadImage('sample3.jpg')
+            }
+
+            request(app)
+                .post('/image/bulk')
+                .send({ images: [image1, image2] })
+                .expect(200, done);
         })
     })
 })

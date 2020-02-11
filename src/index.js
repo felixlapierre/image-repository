@@ -3,8 +3,8 @@ const app = express()
 const port = 3000
 const bodyParser = require('body-parser')
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}))
+app.use(bodyParser.json({limit: '50mb'}))
 
 const imageRouter = require('./imageRouter');
 

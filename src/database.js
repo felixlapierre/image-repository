@@ -20,6 +20,11 @@ var ImageModel = mongoose.model('Images', ImageSchema);
 
 module.exports.saveImage = function(image) {
     var newImage = new ImageModel(image)
+    console.log("Saving image " + image.name);
 
     newImage.save(onError);
+}
+
+module.exports.clearImages = function() {
+    ImageModel.deleteMany({}, onError);
 }

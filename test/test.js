@@ -4,18 +4,15 @@ let app = require('../src/index');
 let database = require('../src/database');
 const sampleImages = require('./sampleImages');
 const getAuthHeaders = require('./authRequest');
-let auth, date;
 
 describe('app', () => {
     before(() => {
         database.clearImages();
     })
-    beforeEach(() => {
-        ({auth, date} = getAuthHeaders('mike'));
-    })
     describe('Status', () => {
         it('should return status 200 on GET /', async () => {
-            return request(app, 'mike')
+            ({auth, date} = getAuthHeaders('mike'))
+            return request(app)
                 .get('/')
                 .set('Authorization', auth)
                 .set('Date', date)
@@ -23,15 +20,19 @@ describe('app', () => {
         })
     })
     describe('Uploading images', () => {
+        let auth, date;
+        beforeEach(() => {
+            ({auth, date} = getAuthHeaders('mike'));
+        })
         it('should support uploading single images', async () => {
-            return request(app, 'mike')
+            return request(app)
                 .post('/image')
                 .set('Authorization', auth)
                 .set('Date', date)
                 .send({ image: sampleImages.sample })
                 .expect(200)
                 .then((response) => {
-                    return request(app, 'mike')
+                    return request(app)
                         .get(`/image/${response.body.uuid}`)
                         .set('Authorization', auth)
                         .set('Date', date)
@@ -44,7 +45,7 @@ describe('app', () => {
         it('should support uploading several images', async () => {
             const images = [sampleImages.blue, sampleImages.matterhorn];
 
-            return request(app, 'mike')
+            return request(app)
                 .post('/image/bulk')
                 .set('Authorization', auth)
                 .set('Date', date)
@@ -52,12 +53,12 @@ describe('app', () => {
                 .expect(200)
                 .then((response) => {
                     return Promise.all([
-                        request(app, 'mike')
+                        request(app)
                         .get(`/image/${response.body.images[0].uuid}`)
                         .set('Authorization', auth)
                         .set('Date', date)
                         .expect(200),
-                        request(app, 'mike')
+                        request(app)
                         .get(`/image/${response.body.images[1].uuid}`)
                         .set('Authorization', auth)
                         .set('Date', date)
@@ -67,6 +68,40 @@ describe('app', () => {
                     expect(responses[0].body.base64).to.equal(sampleImages.blue.base64);
                     expect(responses[1].body.base64).to.equal(sampleImages.matterhorn.base64);
                 })
+        })
+
+        it('should only show private images to the image uploader', () => {
+            const image = sampleImages.snom;
+            image.visibility = "private";
+            let imageUuid;
+
+            return request(app)
+                .post('/image')
+                .set('Authorization', auth)
+                .set('Date', date)
+                .send({image: image})
+                .expect(200)
+                .then((response) => {
+                    imageUuid = response.body.uuid;
+                    
+                    return request(app)
+                        .get(`/image/${imageUuid}`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(200)
+                }).then((response) => {
+                    expect(response.body.base64).to.equal(sampleImages.snom.base64);
+                    return Promise.resolve()
+                }).then(() => {
+                    ({auth, date} = getAuthHeaders('frankie'));
+
+                    return request(app)
+                        .get(`/image/${imageUuid}`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(401);
+                })
+
         })
     })
 })

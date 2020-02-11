@@ -7,18 +7,28 @@ function loadImage(filename) {
 const sample = loadImage('sample.jpg');
 const blue = loadImage('blue.jpg');
 const matterhorn = loadImage('matterhorn.jpg');
+const snom = loadImage('snom.png');
 
 module.exports.sample = {
     name: "Sample Image",
-    base64: sample
+    base64: sample,
+    visibility: "public"
 }
 
 module.exports.blue = {
     name: "Blue",
-    base64: blue
+    base64: blue,
+    visibility: "public"
 }
 
 module.exports.matterhorn = {
     name: "Matterhorn",
-    base64: matterhorn
+    base64: matterhorn,
+    visibility: "public"
+}
+
+module.exports.snom = {
+    name: "Snom",
+    base64: snom,
+    visibility: "public"
 }

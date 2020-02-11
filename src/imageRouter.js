@@ -17,7 +17,6 @@ router.post('/', (req, res) => {
 
 router.post('/bulk', (req, res) => {
     const images = req.body.images;
-    console.log(images.length);
     const promises = images.map((image) => {
         return database.saveImage(image);
     })

@@ -24,9 +24,9 @@ module.exports.saveImage = function (image) {
     return new Promise((resolve, reject) => {
         image.uuid = uuid.v4();
         var newImage = new ImageModel(image)
-    
+
         newImage.save({}, (err, product) => {
-            if(err) reject(err)
+            if (err) reject(err)
             else resolve(product)
         });
     })
@@ -34,4 +34,13 @@ module.exports.saveImage = function (image) {
 
 module.exports.clearImages = function () {
     ImageModel.deleteMany({}, onError);
+}
+
+module.exports.findImageByUuid = function (uuid) {
+    return new Promise((resolve, reject) => {
+        ImageModel.find({ uuid: uuid }, (err, image) => {
+            if(err) reject(err)
+            else resolve(image);
+        })
+    })
 }

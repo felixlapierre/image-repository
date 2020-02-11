@@ -2,8 +2,13 @@ var express = require('express')
 var router = express.Router()
 var database = require('./database');
 
-router.get('/', (req, res) => {
-    res.send("GET image")
+router.get('/:uuid', (req, res) => {
+    database.findImageByUuid(req.params.uuid).then((image) => {
+        delete image['_id'];
+        res.status(200).send(image);
+    }).catch((err) => {
+        res.sendStatus(404);
+    })
 })
 
 router.post('/', (req, res) => {

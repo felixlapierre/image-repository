@@ -11,7 +11,7 @@ describe('app', () => {
     })
     describe('Status', () => {
         it('should return status 200 on GET /', async () => {
-            ({auth, date} = getAuthHeaders('mike'))
+            ({ auth, date } = getAuthHeaders('mike'))
             return request(app)
                 .get('/')
                 .set('Authorization', auth)
@@ -22,7 +22,7 @@ describe('app', () => {
     describe('Uploading images', () => {
         let auth, date;
         beforeEach(() => {
-            ({auth, date} = getAuthHeaders('mike'));
+            ({ auth, date } = getAuthHeaders('mike'));
         })
         it('should support uploading single images', async () => {
             return request(app)
@@ -49,20 +49,20 @@ describe('app', () => {
                 .post('/image/bulk')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({ images: images})
+                .send({ images: images })
                 .expect(200)
                 .then((response) => {
                     return Promise.all([
                         request(app)
-                        .get(`/image/${response.body.images[0].uuid}`)
-                        .set('Authorization', auth)
-                        .set('Date', date)
-                        .expect(200),
+                            .get(`/image/${response.body.images[0].uuid}`)
+                            .set('Authorization', auth)
+                            .set('Date', date)
+                            .expect(200),
                         request(app)
-                        .get(`/image/${response.body.images[1].uuid}`)
-                        .set('Authorization', auth)
-                        .set('Date', date)
-                        .expect(200)
+                            .get(`/image/${response.body.images[1].uuid}`)
+                            .set('Authorization', auth)
+                            .set('Date', date)
+                            .expect(200)
                     ])
                 }).then((responses) => {
                     expect(responses[0].body.base64).to.equal(sampleImages.blue.base64);
@@ -79,11 +79,11 @@ describe('app', () => {
                 .post('/image')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({image: image})
+                .send({ image: image })
                 .expect(200)
                 .then((response) => {
                     imageUuid = response.body.uuid;
-                    
+
                     return request(app)
                         .get(`/image/${imageUuid}`)
                         .set('Authorization', auth)
@@ -93,7 +93,7 @@ describe('app', () => {
                     expect(response.body.base64).to.equal(sampleImages.snom.base64);
                     return Promise.resolve()
                 }).then(() => {
-                    ({auth, date} = getAuthHeaders('frankie'));
+                    ({ auth, date } = getAuthHeaders('frankie'));
 
                     return request(app)
                         .get(`/image/${imageUuid}`)
@@ -107,7 +107,29 @@ describe('app', () => {
 
     describe('Deleting images', () => {
         it('should allow deleting images', () => {
+            const image = sampleImages.matterhorn;
+            let imageUuid;
 
+            return request(app)
+                .post('/image')
+                .set('Authorization', auth)
+                .set('Date', date)
+                .send({ image: image })
+                .expect(200)
+                .then((response) => {
+                    imageUuid = response.body.uuid;
+                    return request(app)
+                        .delete(`/image/${imageUuid}`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(200)
+                }).then(() => {
+                    return request(app)
+                        .get(`/image/${imageUuid}`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(404)
+                })
         })
 
         it('should not allow deleting another user\'s images')

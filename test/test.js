@@ -104,4 +104,12 @@ describe('app', () => {
 
         })
     })
+
+    describe('Deleting images', () => {
+        it('should allow deleting images', () => {
+
+        })
+
+        it('should not allow deleting another user\'s images')
+    })
 })

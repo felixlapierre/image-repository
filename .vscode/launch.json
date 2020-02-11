@@ -14,7 +14,9 @@
                 "999999",
                 "--colors",
                 "${file}",
-                "--exit"
+                "--exit",
+                "--reporter",
+                "nyan"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"

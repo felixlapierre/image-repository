@@ -4,7 +4,10 @@ var database = require('./database');
 
 router.get('/:uuid', (req, res) => {
     database.findImageByUuid(req.params.uuid).then((image) => {
-        res.status(200).send(image);
+        if(image.visibility == "private" && image.owner != req.credentials.id)
+            res.status(401).send()
+        else
+            res.status(200).send(image);
     }).catch((err) => {
         res.sendStatus(404);
     })
@@ -12,6 +15,7 @@ router.get('/:uuid', (req, res) => {
 
 router.post('/', (req, res) => {
     const image = req.body.image;
+    image.owner = req.credentials.id;
     database.saveImage(image).then((savedImage) => {
         res.status(200).send({uuid: savedImage.uuid});
     }).catch((err) => {
@@ -22,6 +26,7 @@ router.post('/', (req, res) => {
 router.post('/bulk', (req, res) => {
     const images = req.body.images;
     const savedImages = images.map((image) => {
+        image.owner = req.credentials.id;
         return database.saveImage(image);
     })
     Promise.all(savedImages).then((images) => {

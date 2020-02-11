@@ -15,7 +15,9 @@ var Schema = mongoose.Schema;
 var ImageSchema = new Schema({
     name: String,
     base64: String,
-    uuid: String
+    uuid: String,
+    visibility: String,
+    owner: String
 })
 
 var ImageModel = mongoose.model('Images', ImageSchema);

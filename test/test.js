@@ -16,7 +16,7 @@ describe('app', () => {
         })
     })
     describe('Uploading images', () => {
-        it('should support uploading several images', async () => {
+        it('should support uploading single images', async () => {
             return request(app)
                 .post('/image')
                 .send({ image: sampleImages.sample })

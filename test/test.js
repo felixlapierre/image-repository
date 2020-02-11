@@ -18,7 +18,12 @@ describe('app', () => {
     })
     describe('POST /images', () => {
         it('should upload an image', () => {
-            const image = loadImage('sample.jpg');
+            const name = "Sample Image";
+            const base64 = loadImage('sample.jpg');
+            const image = {
+                name: name,
+                base64: base64
+            }
             request(app)
                 .post('/image')
                 .send({image: image})

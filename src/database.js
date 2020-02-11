@@ -12,15 +12,14 @@ function onError(error) {
 var Schema = mongoose.Schema;
 
 var ImageSchema = new Schema({
+    name: String,
     base64: String
 })
 
 var ImageModel = mongoose.model('Images', ImageSchema);
 
-module.exports.saveImage = function(base64) {
-    var newImage = new ImageModel({
-        base64: base64
-    })
+module.exports.saveImage = function(image) {
+    var newImage = new ImageModel(image)
 
     newImage.save(onError);
 }

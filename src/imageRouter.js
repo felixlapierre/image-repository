@@ -7,10 +7,16 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const imgData = req.body.image;
-    database.saveImage(imgData);
+    const image = req.body.image;
+    database.saveImage(image);
     res.status(200).send("Image saved successfully");
 })
 
+router.post('/bulk', (req, res) => {
+    const images = req.body.images;
+    images.forEach((image) => {
+        database.saveImage(image);
+    })
+})
 
 module.exports = router

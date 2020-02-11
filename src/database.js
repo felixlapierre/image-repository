@@ -45,8 +45,16 @@ module.exports.findImageByUuid = function (uuid) {
             else if (images.length == 0) reject();
             if (images.length > 1) 
                 console.log("More than 1 image found with uuid " + uuid);
-            delete images[0]['_id'];
             resolve(images[0]);
+        })
+    })
+}
+
+module.exports.deleteImage = function (uuid) {
+    return new Promise((resolve, reject) => {
+        ImageModel.deleteOne({uuid: uuid}, (err) => {
+            if(err) reject(err)
+            else resolve();
         })
     })
 }

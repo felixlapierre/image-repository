@@ -106,6 +106,10 @@ describe('app', () => {
     })
 
     describe('Deleting images', () => {
+        let auth, date;
+        beforeEach(() => {
+            ({ auth, date } = getAuthHeaders('mike'));
+        })
         it('should allow deleting images', () => {
             const image = sampleImages.matterhorn;
             let imageUuid;
@@ -132,6 +136,23 @@ describe('app', () => {
                 })
         })
 
-        it('should not allow deleting another user\'s images')
+        it('should not allow deleting another user\'s images', () => {
+            const image = sampleImages.sample;
+
+            return request(app)
+                .post('/image')
+                .set('Authorization', auth)
+                .set('Date', date)
+                .send({image: image})
+                .expect(200)
+                .then((response) => {
+                    ({auth, date} = getAuthHeaders('frankie'))
+                    return request(app)
+                        .delete(`/image/${response.body.uuid}`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(401)                        
+                })
+        })
     })
 })

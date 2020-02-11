@@ -36,4 +36,19 @@ router.post('/bulk', (req, res) => {
     })
 })
 
+router.delete('/:uuid', (req, res) => {
+    const uuid = req.params.uuid
+    database.findImageByUuid(uuid).then((image) => {
+        if(image.owner != req.credentials.id) {
+            res.sendStatus(401);
+        } else {
+            database.deleteImage(uuid).then(() => {
+                res.sendStatus(200)
+            })
+        }
+    }).catch((err) => {
+        res.sendStatus(404);
+    })
+})
+
 module.exports = router

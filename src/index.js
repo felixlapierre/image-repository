@@ -6,8 +6,10 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}))
 app.use(bodyParser.json({limit: '50mb'}))
 
-const imageRouter = require('./imageRouter');
+const auth = require('./auth');
+app.use(auth);
 
+const imageRouter = require('./imageRouter');
 app.use('/image', imageRouter);
 
 app.get('/', (req, res) => res.status(200).send('Hello World!'))

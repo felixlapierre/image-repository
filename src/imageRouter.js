@@ -21,10 +21,10 @@ router.post('/', (req, res) => {
 
 router.post('/bulk', (req, res) => {
     const images = req.body.images;
-    const promises = images.map((image) => {
+    const savedImages = images.map((image) => {
         return database.saveImage(image);
     })
-    Promise.all(promises).then((images) => {
+    Promise.all(savedImages).then((images) => {
         res.status(200).send({images: images})
     }).catch(() => {
         res.sendStatus(500);

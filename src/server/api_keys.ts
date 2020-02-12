@@ -1,4 +1,4 @@
-[{
+export default [{
     "key": "a5b9731b-240a-4d9d-bbf5-8bd35502e16e",
     "name": "mike",
     "secret": "mike-secret"

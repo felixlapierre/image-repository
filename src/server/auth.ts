@@ -6,7 +6,7 @@ import apiKeyAuth = require('api-key-auth');
  * Existing keys are hardcoded into a json file, in a real system these would
  * be managed by an authentication server.
  */
-const existingKeys = require("./api_keys.json");
+const existingKeys = require("./api_keys").default;
 
 existingKeys.forEach((data) => {
     apiKeys.set(data.key, {

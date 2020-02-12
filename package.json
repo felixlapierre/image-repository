@@ -4,9 +4,10 @@
     "description": "Image repository server created for the Shopify developer intern challenge question",
     "main": "index.js",
     "scripts": {
-        "start": "npm run build && npm run run",
-        "build": "tsc",
-        "run": "node build/index.js",
+        "start": "npm run backend",
+        "backend": "npm run build && node build/src/index.js",
+        "frontend": "npm run build && node build/frontend/app.js",
+        "build": "tsc && copyfiles -u 1 -e frontend/**/*.ts frontend/**/* build/frontend",
         "test": "mocha -r ts-node/register --exit --reporter nyan test/**/*.ts"
     },
     "repository": {
@@ -21,8 +22,10 @@
     "homepage": "https://github.com/felixlapierre/image-repository#readme",
     "dependencies": {
         "api-key-auth": "^0.2.2",
+        "copyfiles": "^2.2.0",
         "express": "^4.17.1",
         "mongoose": "^5.8.11",
+        "pug": "^2.0.4",
         "uuid": "^3.4.0"
     },
     "devDependencies": {

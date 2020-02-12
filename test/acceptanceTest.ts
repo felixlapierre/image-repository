@@ -4,9 +4,9 @@ import {expect} from 'chai';
 import {Server} from '../src/server/Server';
 import {MongoDBImageDatabase} from '../src/database/MongoDBImageDatabase';
 
-import {SampleImages} from './SampleImages';
+import {SampleImages} from './utils/sampleImages';
 
-const getAuthHeaders = require('./authRequest');
+const getAuthHeaders = require('./utils/authRequest');
 
 const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
 const server = new Server(database);
@@ -162,7 +162,7 @@ describe('app', () => {
                 })
         })
 
-        it('should allow deleting bulk images', async () => {
+        it.skip('should allow deleting bulk images', async () => {
             const images = [SampleImages.Blue, SampleImages.Snom];
 
             return request(app)
@@ -179,6 +179,41 @@ describe('app', () => {
                         .set('Date', date)
                         .send({images: toDelete})
                         .expect(200)
+                })
+        })
+    })
+
+    describe('Image search', () => {
+        let auth: string, date: string;
+        beforeEach(() => {
+            ({auth, date} = getAuthHeaders('mike'));
+        })
+        it('should support searching by name', () => {
+            database.clearImages();
+            const images = [SampleImages.Blue, SampleImages.Snom, SampleImages.Blue];
+            let uuids;
+
+            return request(app)
+                .post('/image/bulk')
+                .set('Authorization', auth)
+                .set('Date', date)
+                .send({images: images})
+                .expect(200)
+                .then((response) => {
+                    uuids = response.body.images.map((image) => {
+                        return image.uuid;
+                    })
+
+                    const search = SampleImages.Blue.name;
+
+                    return request(app)
+                    .get(`/search?name=${encodeURIComponent(search)}`)
+                    .set('Authorization', auth)
+                    .set('Date', date)
+                    .expect(200)                    
+                }).then((response) => {
+                    expect(response.body.images).to.contain(uuids[0]);
+                    expect(response.body.images).to.contain(uuids[2]);
                 })
         })
     })

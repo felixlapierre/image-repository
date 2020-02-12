@@ -1,6 +1,7 @@
 function loadImage(filename) {
     const fs = require('fs');
-    const imageAsBase64 = fs.readFileSync(`${__dirname}\\images\\${filename}`, 'base64');
+    const path = require('path');
+    const imageAsBase64 = fs.readFileSync(path.resolve(`${__dirname}\\..\\images\\${filename}`), 'base64');
     return imageAsBase64;
 }
 

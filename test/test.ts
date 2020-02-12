@@ -4,7 +4,8 @@ import {expect} from 'chai';
 import {Server} from '../src/server/Server';
 import {MongoDBImageDatabase} from '../src/database/MongoDBImageDatabase';
 
-const sampleImages = require('./sampleImages');
+import {SampleImages} from './SampleImages';
+
 const getAuthHeaders = require('./authRequest');
 
 const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
@@ -35,7 +36,7 @@ describe('app', () => {
                 .post('/image')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({ image: sampleImages.sample })
+                .send({ image: SampleImages.Sample })
                 .expect(200)
                 .then((response) => {
                     return request(app)
@@ -44,12 +45,12 @@ describe('app', () => {
                         .set('Date', date)
                         .expect(200)
                 }).then((response) => {
-                    expect(response.body.base64).to.equal(sampleImages.sample.base64);
+                    expect(response.body.base64).to.equal(SampleImages.Sample.base64);
                 })
         })
 
         it('should support uploading several images', async () => {
-            const images = [sampleImages.blue, sampleImages.matterhorn];
+            const images = [SampleImages.Blue, SampleImages.Matterhorn];
 
             return request(app)
                 .post('/image/bulk')
@@ -71,13 +72,13 @@ describe('app', () => {
                             .expect(200)
                     ])
                 }).then((responses) => {
-                    expect(responses[0].body.base64).to.equal(sampleImages.blue.base64);
-                    expect(responses[1].body.base64).to.equal(sampleImages.matterhorn.base64);
+                    expect(responses[0].body.base64).to.equal(SampleImages.Blue.base64);
+                    expect(responses[1].body.base64).to.equal(SampleImages.Matterhorn.base64);
                 })
         })
 
         it('should only show private images to the image uploader', async () => {
-            const image = sampleImages.snom;
+            const image = SampleImages.Snom;
             image.visibility = "private";
             let imageUuid;
 
@@ -96,7 +97,7 @@ describe('app', () => {
                         .set('Date', date)
                         .expect(200)
                 }).then((response) => {
-                    expect(response.body.base64).to.equal(sampleImages.snom.base64);
+                    expect(response.body.base64).to.equal(SampleImages.Snom.base64);
                     return Promise.resolve()
                 }).then(() => {
                     ({ auth, date } = getAuthHeaders('frankie'));
@@ -117,7 +118,7 @@ describe('app', () => {
             ({ auth, date } = getAuthHeaders('mike'));
         })
         it('should allow deleting images', async () => {
-            const image = sampleImages.matterhorn;
+            const image = SampleImages.Matterhorn;
             let imageUuid;
 
             return request(app)
@@ -143,7 +144,7 @@ describe('app', () => {
         })
 
         it('should not allow deleting another user\'s images', async () => {
-            const image = sampleImages.sample;
+            const image = SampleImages.Sample;
 
             return request(app)
                 .post('/image')
@@ -159,6 +160,10 @@ describe('app', () => {
                         .set('Date', date)
                         .expect(401)                        
                 })
+        })
+
+        it('should allow deleting bulk images', async () => {
+            const images = [SampleImages.Blue]
         })
     })
 })

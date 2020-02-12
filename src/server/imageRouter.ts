@@ -63,4 +63,8 @@ export class ImageRouter {
             res.sendStatus(404);
         })
     }
+
+    deleteBulk(req, res) {
+        
+    }
 }

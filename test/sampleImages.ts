@@ -9,26 +9,25 @@ const blue = loadImage('blue.jpg');
 const matterhorn = loadImage('matterhorn.jpg');
 const snom = loadImage('snom.png');
 
-module.exports.sample = {
-    name: "Sample Image",
-    base64: sample,
-    visibility: "public"
-}
-
-module.exports.blue = {
-    name: "Blue",
-    base64: blue,
-    visibility: "public"
-}
-
-module.exports.matterhorn = {
-    name: "Matterhorn",
-    base64: matterhorn,
-    visibility: "public"
-}
-
-module.exports.snom = {
-    name: "Snom",
-    base64: snom,
-    visibility: "public"
+export class SampleImages {
+    static Sample = {
+        name: "Sample Image",
+        base64: sample,
+        visibility: "public"
+    }
+    static Blue = {
+        name: "Blue",
+        base64: blue,
+        visibility: "public"
+    }
+    static Matterhorn = {
+        name: "Matterhorn",
+        base64: matterhorn,
+        visibility: "public"
+    }
+    static Snom = {
+        name: "Snom",
+        base64: snom,
+        visibility: "public"
+    }
 }

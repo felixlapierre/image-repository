@@ -10,7 +10,7 @@ const existingKeys = require("./api_keys").default;
 
 existingKeys.forEach((data) => {
     apiKeys.set(data.key, {
-        id: uuid.v4(),
+        id: data.id,
         name: data.name,
         secret: data.secret
     })

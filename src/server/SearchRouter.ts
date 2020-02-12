@@ -13,12 +13,7 @@ export class SearchRouter {
     }
 
     get(req, res) {
-        let query = req.query.query
-        if(!req.query.query) {
-            query = '';
-        }
-
-        this.database.searchImage(query).then((images) => {
+        this.database.searchImage(req.query.query).then((images) => {
             const returned = images.map((image) => {
                 return image.uuid;
             })

@@ -3,9 +3,14 @@
         "esModuleInterop": true,
         "outDir": "./build",
         "allowJs": true,
-        "lib": ["ES2015"]
+        "lib": ["ES2015"],
+        "typeRoots": [
+            "node_modules/@types",
+            "src/typings"
+        ]
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "./test/**/*"
     ]
 }

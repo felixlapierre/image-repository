@@ -1,3 +1,4 @@
+/// <reference path="../src/typings/custom.d.ts" />
 import request = require('supertest');
 import {expect} from 'chai';
 import app = require('../src/index');

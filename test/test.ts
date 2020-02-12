@@ -1,12 +1,15 @@
 /// <reference path="../src/typings/custom.d.ts" />
 import request = require('supertest');
 import {expect} from 'chai';
-import app = require('../src/index');
+import {Server} from '../src/server/server';
 import {MongoDBImageDatabase} from '../src/database/MongoDBImageDatabase';
-const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
 
 const sampleImages = require('./sampleImages');
 const getAuthHeaders = require('./authRequest');
+
+const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
+const server = new Server(database);
+const app = server.getExpressApp();
 
 describe('app', () => {
     before(() => {

@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { ImageDatabase } from './database/ImageDatabase';
+import { ImageDatabase } from '../database/ImageDatabase';
 
 export class ImageRouter {
     private router: Router

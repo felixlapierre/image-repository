@@ -9,7 +9,6 @@ app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
     Request({path: '/image/all', method: 'get'}, 'mike').then((response) => {
-        console.log(response.data.images.length);
         if(response.data.images.length == 0) {
             res.render("homepage", {images: ["No images to be displayed"]});
             return;

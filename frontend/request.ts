@@ -7,7 +7,6 @@ export interface RequestOptions {
 }
 
 export function Request(options: RequestOptions, user: string) {
-    console.log("Sending request");
     let auth, date;
     ({ auth, date } = authRequest(user))
 

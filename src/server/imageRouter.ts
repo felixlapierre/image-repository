@@ -1,6 +1,8 @@
 import express, { Router } from 'express';
 import { ImageDatabase } from '../database/ImageDatabase';
 import { Image } from '../database/ImageModel';
+import { users } from './auth';
+const userMap = users;
 
 export class ImageRouter {
     private router: Router
@@ -20,42 +22,45 @@ export class ImageRouter {
     removeForbiddenImages(images: Image[], user: string) {
         const returned = [];
         images.forEach((image) => {
-            if(image.visibility != "private" || image.owner == user)
+            if (image.visibility != "private" || image.owner == user)
                 returned.push(image);
         })
         return returned;
     }
 
     get(req, res) {
-        this.database.findImages({uuid: req.params.uuid}).then((images: Image[]) => {
-            if(images.length == 0) {
+        this.database.findImages({ uuid: req.params.uuid }).then((images: Image[]) => {
+            if (images.length == 0) {
                 return res.status(404).send();
             }
             const visibleImages = this.removeForbiddenImages(images, req.credentials.id)
-            if(visibleImages.length == 0) {
+            if (visibleImages.length == 0) {
                 return res.status(401).send();
             } else {
                 res.status(200).send(visibleImages[0]);
             }
         }).catch((err) => {
+            console.log(err);
             res.sendStatus(500);
         })
     }
-    
+
     getAll(req, res) {
         this.database.findImages({}).then((images: Image[]) => {
             const visibleImages = this.removeForbiddenImages(images, req.credentials.id);
-            const imageUuids = visibleImages.map((image) => {return image.uuid});
-            res.status(200).send({images: imageUuids});
+            const imageUuids = visibleImages.map((image) => { return image.uuid });
+            res.status(200).send({ images: imageUuids });
         })
     }
 
     post(req, res) {
         const image = req.body.image;
         image.owner = req.credentials.id;
+        image.ownerName = userMap[req.credentials.id];
         this.database.saveImage(image).then((savedImage: any) => {
             res.status(200).send({ uuid: savedImage.uuid });
         }).catch((err) => {
+            console.log(err);
             res.sendStatus(500);
         });
     }
@@ -64,24 +69,26 @@ export class ImageRouter {
         const images = req.body.images;
         const savedImages = images.map((image) => {
             image.owner = req.credentials.id;
+            image.ownerName = userMap[req.credentials.id];
             return this.database.saveImage(image);
         })
         Promise.all(savedImages).then((images) => {
             res.status(200).send({ images: images })
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err);
             res.sendStatus(500);
         })
     }
 
     delete(req, res) {
         const uuid = req.params.uuid
-        this.database.findImages({uuid: uuid}).then((images: Image[]) => {
-            if(images.length === 0)
+        this.database.findImages({ uuid: uuid }).then((images: Image[]) => {
+            if (images.length === 0)
                 return res.sendStatus(404);
             const visibleImages = this.removeForbiddenImages(images, req.credentials.id);
-            if(visibleImages.length === 0)
+            if (visibleImages.length === 0)
                 return res.sendStatus(401);
-            
+
             this.database.deleteImage(visibleImages[0].uuid).then(() => {
                 res.sendStatus(200);
             })
@@ -91,6 +98,6 @@ export class ImageRouter {
     }
 
     deleteBulk(req, res) {
-        
+
     }
 }

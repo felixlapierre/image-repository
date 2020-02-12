@@ -1,5 +1,4 @@
 const apiKeys = new Map();
-import uuid from 'uuid';
 import apiKeyAuth = require('api-key-auth');
 
 /**
@@ -8,12 +7,17 @@ import apiKeyAuth = require('api-key-auth');
  */
 const existingKeys = require("./api_keys").default;
 
+const users = {};
+
 existingKeys.forEach((data) => {
     apiKeys.set(data.key, {
         id: data.id,
+        key: data.key,
         name: data.name,
         secret: data.secret
     })
+
+    users[data.id] = data.name;
 })
 
 function getSecret(key, done) {
@@ -29,4 +33,5 @@ function getSecret(key, done) {
     })
 }
 
-module.exports = apiKeyAuth({ getSecret });
+const auth = apiKeyAuth({getSecret});
+export {auth, users};

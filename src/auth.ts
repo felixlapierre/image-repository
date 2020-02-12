@@ -1,27 +1,15 @@
 const apiKeys = new Map();
 import uuid from 'uuid';
-const apiKeyAuth = require('api-key-auth');
+import apiKeyAuth = require('api-key-auth');
 
-const key1 = "a5b9731b-240a-4d9d-bbf5-8bd35502e16e"
-const key2 = "67f66d5e-19e8-4162-bf7f-6f1be73d6537"
-const key3 = "1c383b31-3c44-413c-a286-5d07562a582d"
+const existingKeys = require("./api_keys.json");
 
-apiKeys.set(key1, {
-    id: uuid.v4(),
-    name: 'mike',
-    secret: 'mike-secret'
-})
-
-apiKeys.set(key2, {
-    id: uuid.v4(),
-    name: 'frankie',
-    secret: 'frankie-secret'
-})
-
-apiKeys.set(key3, {
-    id: uuid.v4(),
-    name: 'rebecca',
-    secret: 'rebecca-secret'
+existingKeys.forEach((data) => {
+    apiKeys.set(data.key, {
+        id: uuid.v4(),
+        name: data.name,
+        secret: data.secret
+    })
 })
 
 function getSecret(key, done) {

@@ -1,10 +1,10 @@
 /// <reference path="../src/typings/custom.d.ts" />
 import request = require('supertest');
-import {expect} from 'chai';
-import {Server} from '../src/server/Server';
-import {MongoDBImageDatabase} from '../src/database/MongoDBImageDatabase';
+import { expect } from 'chai';
+import { Server } from '../src/server/Server';
+import { MongoDBImageDatabase } from '../src/database/MongoDBImageDatabase';
 
-import {SampleImages} from './utils/sampleImages';
+import { SampleImages } from './utils/sampleImages';
 
 const getAuthHeaders = require('./utils/authRequest');
 
@@ -150,15 +150,15 @@ describe('app', () => {
                 .post('/image')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({image: image})
+                .send({ image: image })
                 .expect(200)
                 .then((response) => {
-                    ({auth, date} = getAuthHeaders('frankie'))
+                    ({ auth, date } = getAuthHeaders('frankie'))
                     return request(app)
                         .delete(`/image/${response.body.uuid}`)
                         .set('Authorization', auth)
                         .set('Date', date)
-                        .expect(401)                        
+                        .expect(401)
                 })
         })
 
@@ -169,7 +169,7 @@ describe('app', () => {
                 .post('/image/bulk')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({images: images})
+                .send({ images: images })
                 .expect(200)
                 .then((response) => {
                     const toDelete = [response.body.images[0].uuid, response.body.images[1].uuid];
@@ -177,7 +177,7 @@ describe('app', () => {
                         .delete(`/image/bulk`)
                         .set('Authorization', auth)
                         .set('Date', date)
-                        .send({images: toDelete})
+                        .send({ images: toDelete })
                         .expect(200)
                 })
         })
@@ -186,34 +186,59 @@ describe('app', () => {
     describe('Image search', () => {
         let auth: string, date: string;
         beforeEach(() => {
-            ({auth, date} = getAuthHeaders('mike'));
+            ({ auth, date } = getAuthHeaders('mike'));
         })
         it('should support searching by name', async () => {
-            database.clearImages();
-            const images = [SampleImages.Blue, SampleImages.Snom, SampleImages.Blue];
+            const images = [SampleImages.Blue, SampleImages.Railroad, SampleImages.Blue];
             let uuids;
 
             return request(app)
                 .post('/image/bulk')
                 .set('Authorization', auth)
                 .set('Date', date)
-                .send({images: images})
+                .send({ images: images })
                 .expect(200)
                 .then((response) => {
                     uuids = response.body.images.map((image) => {
                         return image.uuid;
                     })
 
-                    const search = SampleImages.Blue.name;
-
                     return request(app)
-                    .get(`/search?name=${encodeURIComponent(search)}`)
-                    .set('Authorization', auth)
-                    .set('Date', date)
-                    .expect(200)                    
+                        .get(`/search?query=blue`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(200)
                 }).then((response) => {
                     expect(response.body.images).to.contain(uuids[0]);
+                    expect(response.body.images).to.not.contain(uuids[1]);
                     expect(response.body.images).to.contain(uuids[2]);
+                })
+        })
+        it('should support searching in description', () => {
+            database.clearImages();
+            const images = [SampleImages.Matterhorn, SampleImages.Railroad, SampleImages.Blue, SampleImages.Sample];
+            let uuids: string[];
+            return request(app)
+                .post('/image/bulk')
+                .set('Authorization', auth)
+                .set('Date', date)
+                .send({ images: images })
+                .expect(200)
+                .then((response) => {
+                    uuids = response.body.images.map((image) => {
+                        return image.uuid;
+                    })
+
+                    return request(app)
+                        .get(`/search?query=sky`)
+                        .set('Authorization', auth)
+                        .set('Date', date)
+                        .expect(200)
+                }).then((response) => {
+                    expect(response.body.images).to.contain(uuids[0]);
+                    expect(response.body.images).to.contain(uuids[1]);
+                    expect(response.body.images).to.contain(uuids[2]);
+                    expect(response.body.images).to.not.contain(uuids[3]);
                 })
         })
     })

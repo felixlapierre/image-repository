@@ -5,7 +5,8 @@ const ImageSchema = createSchema({
     base64: Type.string({ required: true }),
     uuid: Type.string({ required: true }),
     visibility: Type.string({ required: true }),
-    owner: Type.string({ required: true })
+    owner: Type.string({ required: true }),
+    description: Type.string({ required: true})
 })
 
 const Image = typedModel('Image', ImageSchema);

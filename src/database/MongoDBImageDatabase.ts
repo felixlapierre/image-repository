@@ -53,9 +53,9 @@ export class MongoDBImageDatabase implements ImageDatabase {
         })
     }
 
-    searchImage(query: any) {
+    searchImage(query: String) {
         return new Promise<Image[]>((resolve, reject) => {
-            ImageModel.find(query, (err, images) => {
+            ImageModel.find({$text: {$search: query}}, (err, images) => {
                 if(err) reject(err)
                 else resolve(images);
             })

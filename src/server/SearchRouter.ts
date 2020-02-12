@@ -13,12 +13,20 @@ export class SearchRouter {
     }
 
     get(req, res) {
-        this.database.searchImage(req.params).then((images) => {
+        if(!req.query.query) {
+            res.sendStatus(400);
+            return;
+        }
+
+        this.database.searchImage(req.query.query).then((images) => {
             const returned = images.map((image) => {
                 return image.uuid;
             })
 
             res.status(200).send({images: returned});
+        }).catch((err) => {
+            console.log(err);
+            res.sendStatus(500);
         })
     }
 }

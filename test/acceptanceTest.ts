@@ -145,6 +145,7 @@ describe('app', () => {
 
         it('should not allow deleting another user\'s images', async () => {
             const image = SampleImages.Sample;
+            image.visibility = "private";
 
             return request(app)
                 .post('/image')

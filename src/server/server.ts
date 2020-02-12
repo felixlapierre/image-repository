@@ -25,6 +25,11 @@ export class Server {
         this.app.get('/', (req, res) => {
             res.status(200).send('Hello World!');
         })
+
+        this.app.get('*', (req, res) => {
+            console.log("404 on " + req.url);
+            res.sendStatus(404);
+        })
         
         this.app.listen(port, () => console.log(`Now listening on port ${port}.`))
     }

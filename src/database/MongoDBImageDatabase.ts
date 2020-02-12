@@ -32,14 +32,11 @@ export class MongoDBImageDatabase implements ImageDatabase {
         })
     }
 
-    findImageByUuid(uuid: String) {
-        return new Promise<Image>((resolve, reject) => {
-            ImageModel.find({ uuid: uuid }, (err, images) => {
+    findImages(image: Partial<Image>) {
+        return new Promise<Image[]>((resolve, reject) => {
+            ImageModel.find(image, (err, images) => {
                 if(err) reject(err)
-                else if (images.length == 0) reject();
-                if (images.length > 1) 
-                    console.log("More than 1 image found with uuid " + uuid);
-                resolve(images[0]);
+                else resolve(images)
             })
         })
     }

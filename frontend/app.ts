@@ -7,31 +7,40 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
-function renderSearchResults(images, res) {
-    if (images.length == 0) {
-        res.render("header", {});
-    } else {
-        Promise.all(images.map((uuid) => {
-            return Request({ path: `/image/${uuid}`, method: 'GET' }, 'mike')
-        })).then((responses) => {
-            const images = responses.map((response: any) => {
-                return response.data;
-            })
+function getImages(images, user) {
+    return new Promise((resolve, reject) => {
+        if (images.length == 0) {
+            resolve([]);
+        } else {
+            Promise.all(images.map((uuid) => {
+                return Request({ path: `/image/${uuid}`, method: 'GET' }, user).catch((err) => {
+                    return Promise.resolve({data: undefined});
+                })
+            })).then((responses) => {
+                const images = responses.map((response: any) => {
+                    return response.data;
+                })
 
-            res.render("content", { images: images });
-        })
-    }
+                resolve(images);
+            })
+        }
+    })
 }
 
 app.get("/", (req, res) => {
-    Request({ path: '/image/all', method: 'get' }, 'mike').then((response) => {
-        renderSearchResults(response.data.images, res);
+    const user = 'mike';
+    Request({ path: '/image/all', method: 'get' }, user).then((response) => {
+        getImages(response.data.images, user).then((images) => {
+            res.render("content", { images: images, user: 'mike' })
+        });
     });
 })
 
 app.get("/search", (req, res) => {
-    Request({ path: `/search?query=${req.query.search}`, method: 'get' }, 'mike').then((response) => {
-        renderSearchResults(response.data.images, res);
+    Request({ path: `/search?query=${req.query.search}`, method: 'get' }, req.query.user).then((response) => {
+        getImages(response.data.images, req.query.user).then((images) => {
+            res.render("content", { images: images, user: req.query.user })
+        })
     })
 })
 

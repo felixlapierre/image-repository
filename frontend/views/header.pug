@@ -1,13 +1,13 @@
 html
     body
         h1 Image Repository
-        p Act as user: 
-            select
-                option(value="mike") Mike
-                option(value="frankie") Frankie
-                option(value="rebecca") Rebecca
-        p
-            form(method='get' action='/search')
+        form(method='get' action='/search')
+            p Act as user: 
+                select(name="user")
+                    option(value="mike" selected= user == "mike") Mike
+                    option(value="frankie" selected= user == "frankie") Frankie
+                    option(value="rebecca" selected= user == "rebecca") Rebecca
+            p
                 table
                     tr
                         td Search:

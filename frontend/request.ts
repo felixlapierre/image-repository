@@ -9,7 +9,6 @@ export interface RequestOptions {
 export function Request(options: RequestOptions, user: string) {
     let auth, date;
     ({ auth, date } = authRequest(user))
-
     const instance = axios.create({
         timeout: 1000,
         headers: {

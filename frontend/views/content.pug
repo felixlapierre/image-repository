@@ -2,17 +2,18 @@ extends header.pug
 block Content
     table
         each image in images
-            - var base64 = image.base64
-            tr
-                td
-                    img(src='data:image/jpg;base64,' + base64 style="max-height: 100px")
-                td
-                    table
-                        tr
-                            td Title: #{image.name}
-                        tr
-                            td Description: #{image.description}
-                        tr
-                            td Visibility: #{image.visibility}
-                        tr
-                            td Owner: #{image.ownerName}
+            if image
+                - var base64 = image.base64
+                tr
+                    td
+                        img(src='data:image/jpg;base64,' + base64 style="max-height: 100px")
+                    td
+                        table
+                            tr
+                                td Title: #{image.name}
+                            tr
+                                td Description: #{image.description}
+                            tr
+                                td Visibility: #{image.visibility}
+                            tr
+                                td Owner: #{image.ownerName}

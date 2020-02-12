@@ -5,4 +5,5 @@ export interface ImageDatabase {
     clearImages(): Promise<void>
     findImageByUuid(uuid: String): Promise<Image>
     deleteImage(uuid: String): Promise<void>
+    searchImage(query: any): Promise<Image[]>
 }

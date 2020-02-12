@@ -188,7 +188,7 @@ describe('app', () => {
         beforeEach(() => {
             ({auth, date} = getAuthHeaders('mike'));
         })
-        it('should support searching by name', () => {
+        it('should support searching by name', async () => {
             database.clearImages();
             const images = [SampleImages.Blue, SampleImages.Snom, SampleImages.Blue];
             let uuids;

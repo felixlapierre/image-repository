@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import bodyParser = require('body-parser')
 import {ImageRouter} from './ImageRouter';
 import { ImageDatabase } from '../database/ImageDatabase';
+import { SearchRouter } from './SearchRouter';
 
 export class Server {
     private app: Express
@@ -17,6 +18,9 @@ export class Server {
         
         const imageRouter = new ImageRouter(database);
         imageRouter.addToApp(this.app);
+
+        const searchRouter = new SearchRouter(database);
+        searchRouter.addToApp(this.app);
         
         this.app.get('/', (req, res) => res.status(200).send('Hello World!'))
         

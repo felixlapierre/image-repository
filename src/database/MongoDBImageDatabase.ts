@@ -52,4 +52,13 @@ export class MongoDBImageDatabase implements ImageDatabase {
             })
         })
     }
+
+    searchImage(query: any) {
+        return new Promise<Image[]>((resolve, reject) => {
+            ImageModel.find(query, (err, images) => {
+                if(err) reject(err)
+                else resolve(images);
+            })
+        });
+    }
 }

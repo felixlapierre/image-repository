@@ -1,0 +1,18 @@
+html
+    body
+        h1 Image Repository
+        p Act as user: 
+            select
+                option(value="mike") Mike
+                option(value="frankie") Frankie
+                option(value="rebecca") Rebecca
+        p
+            form(method='get' action='/search')
+                table
+                    tr
+                        td Search:
+                            input(type="text" name="search")
+                        td
+                            input(type="submit")
+        p Images
+        block Content

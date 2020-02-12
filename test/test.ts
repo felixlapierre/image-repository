@@ -2,8 +2,8 @@
 import request = require('supertest');
 import {expect} from 'chai';
 import app = require('../src/index');
-import {MongoDBImageDatabase} from '../src/database';
-const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepo');
+import {MongoDBImageDatabase} from '../src/database/MongoDBImageDatabase';
+const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
 
 const sampleImages = require('./sampleImages');
 const getAuthHeaders = require('./authRequest');

@@ -1,9 +1,9 @@
-import express, { Request, Router } from 'express';
-import { MongoDBImageDatabase } from './database';
+import express, { Router } from 'express';
+import { ImageDatabase } from './database/ImageDatabase';
 
 export class ImageRouter {
     private router: Router
-    constructor(private database: MongoDBImageDatabase) {
+    constructor(private database: ImageDatabase) {
         this.router = express.Router();
         this.router.get('/:uuid', this.get.bind(this));
         this.router.post('/', this.post.bind(this));

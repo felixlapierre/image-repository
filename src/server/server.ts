@@ -22,7 +22,9 @@ export class Server {
         const searchRouter = new SearchRouter(database);
         searchRouter.addToApp(this.app);
         
-        this.app.get('/', (req, res) => res.status(200).send('Hello World!'))
+        this.app.get('/', (req, res) => {
+            res.status(200).send('Hello World!');
+        })
         
         this.app.listen(port, () => console.log(`Now listening on port ${port}.`))
     }

@@ -41,6 +41,16 @@
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Start Server",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/index.ts",
+            "outFiles": ["${workspaceFolder}/build/src/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
         }
     ]
 }

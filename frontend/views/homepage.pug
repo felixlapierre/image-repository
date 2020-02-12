@@ -1,4 +1,11 @@
 html
     body
-        h1 Hello World!
-        p Nothing to see here
+        h1 Image Repository
+        p Act as user: 
+            select
+                option(value="mike") Mike
+                option(value="frankie") Frankie
+                option(value="rebecca") Rebecca
+        p Images
+            each image in images
+                p #{image}

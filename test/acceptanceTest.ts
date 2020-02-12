@@ -6,7 +6,7 @@ import { MongoDBImageDatabase } from '../src/database/MongoDBImageDatabase';
 
 import { SampleImages } from './utils/sampleImages';
 
-const getAuthHeaders = require('./utils/authRequest');
+const getAuthHeaders = require('../frontend/authRequest');
 
 const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepotest');
 const server = new Server(database);

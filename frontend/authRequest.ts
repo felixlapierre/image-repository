@@ -1,5 +1,4 @@
 import crypto = require('crypto');
-const request = require('supertest');
 const users = {
     mike: {
         key: "a5b9731b-240a-4d9d-bbf5-8bd35502e16e",

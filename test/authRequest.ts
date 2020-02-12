@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto = require('crypto');
 const request = require('supertest');
 const users = {
     mike: {
@@ -22,7 +22,7 @@ function getAuthorizationHeader(key, secret, date) {
 }
 
 module.exports = function(user) {
-    const date = new Date().toGMTString();
+    const date = new Date().toUTCString();
     const authorizationHeader = getAuthorizationHeader(users[user].key, users[user].secret, date);
     return {auth: authorizationHeader, date: date}
 }

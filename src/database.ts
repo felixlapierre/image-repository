@@ -3,7 +3,7 @@ var connectionString = 'mongodb://localhost:27017/imagerepo';
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '))
-const uuid = require('uuid');
+import uuid = require('uuid');
 
 function onError(error) {
     if (error)
@@ -22,7 +22,7 @@ var ImageSchema = new Schema({
 
 var ImageModel = mongoose.model('Images', ImageSchema);
 
-module.exports.saveImage = function (image) {
+export function saveImage(image) {
     return new Promise((resolve, reject) => {
         image.uuid = uuid.v4();
         var newImage = new ImageModel(image)
@@ -34,11 +34,11 @@ module.exports.saveImage = function (image) {
     })
 }
 
-module.exports.clearImages = function () {
+export function clearImages() {
     ImageModel.deleteMany({}, onError);
 }
 
-module.exports.findImageByUuid = function (uuid) {
+export function findImageByUuid(uuid) {
     return new Promise((resolve, reject) => {
         ImageModel.find({ uuid: uuid }, (err, images) => {
             if(err) reject(err)
@@ -50,7 +50,7 @@ module.exports.findImageByUuid = function (uuid) {
     })
 }
 
-module.exports.deleteImage = function (uuid) {
+export function deleteImage(uuid) {
     return new Promise((resolve, reject) => {
         ImageModel.deleteOne({uuid: uuid}, (err) => {
             if(err) reject(err)

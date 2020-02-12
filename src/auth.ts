@@ -1,5 +1,5 @@
 const apiKeys = new Map();
-const uuid = require('uuid');
+import uuid from 'uuid';
 const apiKeyAuth = require('api-key-auth');
 
 const key1 = "a5b9731b-240a-4d9d-bbf5-8bd35502e16e"
@@ -25,7 +25,7 @@ apiKeys.set(key3, {
 })
 
 function getSecret(key, done) {
-    if(!apiKeys.has(key)) {
+    if (!apiKeys.has(key)) {
         done(new Error('API key not found'));
     }
 
@@ -37,4 +37,4 @@ function getSecret(key, done) {
     })
 }
 
-module.exports = apiKeyAuth({getSecret});
+module.exports = apiKeyAuth({ getSecret });

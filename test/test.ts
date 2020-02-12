@@ -1,7 +1,7 @@
-const request = require('supertest');
-const expect = require('chai').expect;
-let app = require('../src/index');
-let database = require('../src/database');
+import request = require('supertest');
+import {expect} from 'chai';
+import app = require('../src/index');
+import database = require('../src/database');
 const sampleImages = require('./sampleImages');
 const getAuthHeaders = require('./authRequest');
 
@@ -11,7 +11,7 @@ describe('app', () => {
     })
     describe('Status', () => {
         it('should return status 200 on GET /', async () => {
-            ({ auth, date } = getAuthHeaders('mike'))
+            const { auth, date } = getAuthHeaders('mike')
             return request(app)
                 .get('/')
                 .set('Authorization', auth)

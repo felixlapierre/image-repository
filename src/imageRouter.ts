@@ -1,8 +1,8 @@
-var express = require('express')
+import express, { Request } from 'express';
 var router = express.Router()
 var database = require('./database');
 
-router.get('/:uuid', (req, res) => {
+router.get('/:uuid', (req: Request & {credentials: any}, res) => {
     database.findImageByUuid(req.params.uuid).then((image) => {
         if(image.visibility == "private" && image.owner != req.credentials.id)
             res.status(401).send()
@@ -13,7 +13,7 @@ router.get('/:uuid', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', (req: Request & {credentials: any}, res) => {
     const image = req.body.image;
     image.owner = req.credentials.id;
     database.saveImage(image).then((savedImage) => {
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
     });
 })
 
-router.post('/bulk', (req, res) => {
+router.post('/bulk', (req: Request & {credentials: any}, res) => {
     const images = req.body.images;
     const savedImages = images.map((image) => {
         image.owner = req.credentials.id;
@@ -36,7 +36,7 @@ router.post('/bulk', (req, res) => {
     })
 })
 
-router.delete('/:uuid', (req, res) => {
+router.delete('/:uuid', (req: Request & {credentials: any}, res) => {
     const uuid = req.params.uuid
     database.findImageByUuid(uuid).then((image) => {
         if(image.owner != req.credentials.id) {

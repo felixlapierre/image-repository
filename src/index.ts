@@ -9,8 +9,11 @@ app.use(bodyParser.json({limit: '50mb'}))
 const auth = require('./auth');
 app.use(auth);
 
-const imageRouter = require('./imageRouter');
-app.use('/image', imageRouter);
+import {MongoDBImageDatabase} from './database';
+const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepo');
+import {ImageRouter} from './imageRouter';
+const imageRouter = new ImageRouter(database);
+imageRouter.addToApp(app);
 
 app.get('/', (req, res) => res.status(200).send('Hello World!'))
 

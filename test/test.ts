@@ -2,7 +2,9 @@
 import request = require('supertest');
 import {expect} from 'chai';
 import app = require('../src/index');
-import database = require('../src/database');
+import {MongoDBImageDatabase} from '../src/database';
+const database = new MongoDBImageDatabase('mongodb://localhost:27017/imagerepo');
+
 const sampleImages = require('./sampleImages');
 const getAuthHeaders = require('./authRequest');
 
@@ -71,7 +73,7 @@ describe('app', () => {
                 })
         })
 
-        it('should only show private images to the image uploader', () => {
+        it('should only show private images to the image uploader', async () => {
             const image = sampleImages.snom;
             image.visibility = "private";
             let imageUuid;
@@ -111,7 +113,7 @@ describe('app', () => {
         beforeEach(() => {
             ({ auth, date } = getAuthHeaders('mike'));
         })
-        it('should allow deleting images', () => {
+        it('should allow deleting images', async () => {
             const image = sampleImages.matterhorn;
             let imageUuid;
 
@@ -137,7 +139,7 @@ describe('app', () => {
                 })
         })
 
-        it('should not allow deleting another user\'s images', () => {
+        it('should not allow deleting another user\'s images', async () => {
             const image = sampleImages.sample;
 
             return request(app)

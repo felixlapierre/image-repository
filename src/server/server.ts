@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import bodyParser = require('body-parser')
-import {ImageRouter} from './imageRouter';
+import {ImageRouter} from './ImageRouter';
 import { ImageDatabase } from '../database/ImageDatabase';
 
 export class Server {

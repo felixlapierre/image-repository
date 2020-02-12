@@ -2,6 +2,10 @@ const apiKeys = new Map();
 import uuid from 'uuid';
 import apiKeyAuth = require('api-key-auth');
 
+/**
+ * Existing keys are hardcoded into a json file, in a real system these would
+ * be managed by an authentication server.
+ */
 const existingKeys = require("./api_keys.json");
 
 existingKeys.forEach((data) => {

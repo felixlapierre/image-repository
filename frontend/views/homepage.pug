@@ -8,4 +8,5 @@ html
                 option(value="rebecca") Rebecca
         p Images
             each image in images
-                p #{image}
+                - var base64 = image.base64
+                img(src='data:image/jpg;base64,' + base64)

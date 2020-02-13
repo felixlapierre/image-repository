@@ -1,0 +1,16 @@
+extends header.pug
+
+block Search
+    form(method='get' action='/search')
+    p Act as user: 
+        select(name="user")
+            option(value="mike" selected= user == "mike") Mike
+            option(value="frankie" selected= user == "frankie") Frankie
+            option(value="rebecca" selected= user == "rebecca") Rebecca
+    p
+        table
+            tr
+                td Search:
+                    input(type="text" name="search")
+                td
+                    input(type="submit" value="Search")

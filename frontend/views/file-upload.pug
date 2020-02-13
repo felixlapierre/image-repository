@@ -1,0 +1,24 @@
+extends search.pug
+
+block Upload
+    h4 Upload Image
+    form(method='post' action='/image' enctype="multipart/form-data")
+        p Act as user: 
+            select(name="user")
+                option(value="mike" selected= user == "mike") Mike
+                option(value="frankie" selected= user == "frankie") Frankie
+                option(value="rebecca" selected= user == "rebecca") Rebecca
+        p
+            input(type="file" name="image" accept=".jpg")
+        p
+            label(for="title") Title
+            input(type="text" name="title" id="title")
+        p
+            label(for="description") Description
+            input(type="text" name="description" id="description")
+        p
+            select(name="visibility")
+                option(value="public" selected="true") Public
+                option(value="private") Private
+        p
+            input(type="submit" value="Upload")

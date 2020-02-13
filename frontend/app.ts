@@ -1,7 +1,8 @@
 import express = require('express')
 import path = require('path');
 import { Request, RequestOptions } from './request';
-
+import multer = require('multer')
+const upload = multer();
 const app = express();
 
 app.set("view engine", "pug");
@@ -41,6 +42,26 @@ app.get("/search", (req, res) => {
         getImages(response.data.images, req.query.user).then((images) => {
             res.render("content", { images: images, user: req.query.user })
         })
+    })
+})
+
+app.post("/image", upload.single('image'), (req: any, res) => {
+    const encoded = req.file.buffer.toString('base64');
+
+    const image = {
+        name: req.body.title,
+        visibility: req.body.visibility,
+        description: req.body.description,
+        base64: encoded
+    }
+    console.log(image);
+
+    Request({path: `/image`, method: 'post', body: {image: image}}, req.body.user).then(() => {
+        Request({ path: '/image/all', method: 'get' }, req.body.user).then((response) => {
+            getImages(response.data.images, req.body.user).then((images) => {
+                res.render("content", { images: images, user: req.body.user })
+            });
+        });
     })
 })
 

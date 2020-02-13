@@ -4,6 +4,7 @@ const axios = require('axios').default;
 export interface RequestOptions {
     path: string,
     method: string
+    body?: any
 }
 
 export function Request(options: RequestOptions, user: string) {
@@ -19,6 +20,7 @@ export function Request(options: RequestOptions, user: string) {
 
     return instance({
         method: options.method,
-        url: `http://localhost:3000${options.path}`
+        url: `http://localhost:3000${options.path}`,
+        data: options.body
     })
 }

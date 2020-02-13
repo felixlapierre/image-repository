@@ -162,26 +162,6 @@ describe('app', () => {
                         .expect(401)
                 })
         })
-
-        it.skip('should allow deleting bulk images', async () => {
-            const images = [SampleImages.Blue, SampleImages.Snom];
-
-            return request(app)
-                .post('/image/bulk')
-                .set('Authorization', auth)
-                .set('Date', date)
-                .send({ images: images })
-                .expect(200)
-                .then((response) => {
-                    const toDelete = [response.body.images[0].uuid, response.body.images[1].uuid];
-                    return request(app)
-                        .delete(`/image/bulk`)
-                        .set('Authorization', auth)
-                        .set('Date', date)
-                        .send({ images: toDelete })
-                        .expect(200)
-                })
-        })
     })
 
     describe('Image search', () => {

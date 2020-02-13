@@ -16,4 +16,4 @@ db.createIndex({name: "text", description: "text"})
 ## Running Instructions
 * `npm run backend`: Builds and runs the backend server
 * `npm run frontend`: Builds and runs the frontend server
-* `npm run test`: Runs the project acceptance tests
+* `npm run test`: Runs the project acceptance tests. Make sure you enter your mongoDB connection string in acceptanceTest.ts

@@ -1,6 +1,6 @@
 import express = require('express')
 import path = require('path');
-import { Request, RequestOptions } from './request';
+import { Request } from './request';
 import multer = require('multer')
 const upload = multer();
 const app = express();
@@ -54,7 +54,6 @@ app.post("/image", upload.single('image'), (req: any, res) => {
         description: req.body.description,
         base64: encoded
     }
-    console.log(image);
 
     Request({path: `/image`, method: 'post', body: {image: image}}, req.body.user).then(() => {
         Request({ path: '/image/all', method: 'get' }, req.body.user).then((response) => {

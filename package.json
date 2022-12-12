@@ -26,7 +26,7 @@
         "api-key-auth": "^0.2.2",
         "axios": "^0.19.2",
         "copyfiles": "^2.2.0",
-        "express": "^4.17.1",
+        "express": "^4.17.3",
         "mongoose": "^5.8.11",
         "multer": "^1.4.2",
         "pug": "^2.0.4",
